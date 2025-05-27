@@ -92,31 +92,37 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
 
         // GPS setup
-        checkAndRequestLocationPermission()
+        checkAndRequestPermissions()
     }
 
     // ================= GPS ===================
 
-    private fun checkAndRequestLocationPermission() {
+    private fun checkAndRequestPermissions() {
 
         val permissionsNeeded = mutableListOf<String>()
 
-        // Kiểm tra quyền vị trí
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        // Quyền CAMERA
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+
+        // Quyền lưu file (WRITE_EXTERNAL_STORAGE) - chỉ cần xin trên Android < 10
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+
+        // Quyền VỊ TRÍ
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
 
-        // Kiểm tra quyền đọc trạng thái điện thoại (để lấy số điện thoại)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        // Quyền đọc trạng thái điện thoại
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.READ_PHONE_STATE)
         }
 
@@ -127,10 +133,11 @@ class MainActivity : FlutterActivity() {
                 PERMISSION_REQUEST_CODE
             )
         } else {
-            // Quyền đã được cấp, có thể bắt đầu các chức năng
-            startLocationService() // hoặc các hàm khác cần quyền
+            // Quyền đã cấp đủ
+            startLocationService()  // hoặc gọi hàm bắt đầu chụp ảnh
         }
     }
+
     private fun startLocationService() {
         Log.d("MainActivity", "Starting location service")
         val intent = Intent(this, MyForegroundService::class.java)
