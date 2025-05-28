@@ -25,7 +25,9 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.Calendar
 import com.nguyenleduan.app.fpl.MyForegroundService
 import androidx.core.content.ContextCompat
-
+import android.app.DownloadManager
+import android.content.IntentFilter
+import com.nguyenleduan.app.fpl.DownloadReceiver
 
 
 class MainActivity : FlutterActivity() {
@@ -93,6 +95,13 @@ class MainActivity : FlutterActivity() {
 
         // GPS setup
         checkAndRequestPermissions()
+
+        /// Noti APK
+
+//        registerReceiver(
+//            DownloadReceiver(),
+//            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+//        )
     }
 
     // ================= GPS ===================

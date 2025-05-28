@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "187265186047",
+    "project_id": "fpl-project-9930f",
+    "storage_bucket": "fpl-project-9930f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187265186047:android:74c2a0366f4fe3ced4f4ca",
+        "android_client_info": {
+          "package_name": "com.nguyenleduan.app.fpl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0xjxv38HjgYbdCubLOtOAfTfjAO65m78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

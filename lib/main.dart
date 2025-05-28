@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'get_phone_service.dart';
 import 'notification_helper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -38,6 +42,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -48,18 +53,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<void> _incrementCounter() async {
-    NotificationHelper.scheduleDailyNotification();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+         print('FCM: $token');
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -110,14 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Show'),
               ),
             ),
+            SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
