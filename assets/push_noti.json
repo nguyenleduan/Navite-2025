@@ -1,0 +1,15 @@
+{
+  "message":{
+    "token": "d8fPGW0tQciVGE-o-EXY4h:APA91bHrxJnRhx6Bjelil9_tdrF3xj58t5Tb8vR1C8FBewhV5PmrmyPLyz1_u2rDfsNBVsmEWBh7FeT7tm--W3qQ-1TS4TBFr1uuXBaD_HM8wkcp5ByzDBA",
+    "notification": {
+      "body": "helllo",
+      "title": "HELLLLLLLLL1"
+    },
+    "data": {
+      "type": "update",
+      "apk": "https://drive.usercontent.google.com/download?id=1u7hX_zZl8qpNjSbuUUZIySiVCZhzM_Jw&export=download&authuser=2&confirm=t&uuid=83732fce-7284-4409-b88e-820a7dfda336&at=ALoNOgmbwXH6LjFbnUVjncA8TguO%3A1748423756611"
+    }
+  }
+}
+
+// TODO Header Authorization : Bearer+token
