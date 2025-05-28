@@ -28,11 +28,12 @@ import androidx.core.content.ContextCompat
 import android.app.DownloadManager
 import android.content.IntentFilter
 import com.nguyenleduan.app.fpl.DownloadReceiver
-
+import android.provider.Settings
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "Chancel"
-    private val PERMISSION_REQUEST_CODE = 1001
+    private val PERMISSION_REQUEST_CODE = 100
+    private val REQUEST_INSTALL_UNKNOWN_APK = 101
 
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -105,24 +106,22 @@ class MainActivity : FlutterActivity() {
     }
 
     // ================= GPS ===================
-
     private fun checkAndRequestPermissions() {
-
         val permissionsNeeded = mutableListOf<String>()
 
-        // Quyền CAMERA
+        // CAMERA
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.CAMERA)
         }
 
-        // Quyền lưu file (WRITE_EXTERNAL_STORAGE) - chỉ cần xin trên Android < 10
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+        // WRITE_EXTERNAL_STORAGE chỉ dành cho Android < Q (Android 10)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
 
-        // Quyền VỊ TRÍ
+        // LOCATION
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
         }
@@ -130,11 +129,19 @@ class MainActivity : FlutterActivity() {
             permissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
 
-        // Quyền đọc trạng thái điện thoại
+        // READ_PHONE_STATE
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.READ_PHONE_STATE)
         }
 
+        // POST_NOTIFICATIONS cho Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        // Nếu cần xin các quyền runtime
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
@@ -142,10 +149,22 @@ class MainActivity : FlutterActivity() {
                 PERMISSION_REQUEST_CODE
             )
         } else {
-            // Quyền đã cấp đủ
-            startLocationService()  // hoặc gọi hàm bắt đầu chụp ảnh
+            // Kiểm tra thêm quyền cài đặt APK từ nguồn không xác định (Android 8+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!packageManager.canRequestPackageInstalls()) {
+                    val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                    startActivityForResult(intent, REQUEST_INSTALL_UNKNOWN_APK)
+                    return
+                }
+            }
+
+            // Đã đủ quyền
+            startLocationService() // hoặc gọi hàm khác
         }
     }
+
 
     private fun startLocationService() {
         Log.d("MainActivity", "Starting location service")

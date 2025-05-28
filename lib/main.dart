@@ -74,51 +74,51 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-           InkWell(
-             onTap: (){
-                NotificationHelper.checkPermission();
-             },
-            child: Container(
-              width: 300,
-              color: Colors.grey,
-              height: 50,
-              alignment: Alignment.center,
-              child: Text('Permission'),
-            ),
-           ),
-            SizedBox(
-               height: 30,
-            ),
-            InkWell(
-              onTap: (){
-                NotificationHelper.scheduleDailyNotification();
-              },
-              child: Container(
-                width: 300,
-                color: Colors.grey,
-                height: 50,
-                alignment: Alignment.center,
-                child: Text('SEND'),
-              ),
-            ),
-            SizedBox(
-               height: 30,
-            ),
-            InkWell(
-              onTap: (){
-                NotificationHelper.showNotification();
-              },
-              child: Container(
-                width: 300,
-                color: Colors.grey,
-                height: 50,
-                alignment: Alignment.center,
-                child: Text('Show'),
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
+           // InkWell(
+           //   onTap: (){
+           //      NotificationHelper.checkPermission();
+           //   },
+           //  child: Container(
+           //    width: 300,
+           //    color: Colors.grey,
+           //    height: 50,
+           //    alignment: Alignment.center,
+           //    child: Text('Permission'),
+           //  ),
+           // ),
+           //  SizedBox(
+           //     height: 30,
+           //  ),
+           //  InkWell(
+           //    onTap: (){
+           //      NotificationHelper.scheduleDailyNotification();
+           //    },
+           //    child: Container(
+           //      width: 300,
+           //      color: Colors.grey,
+           //      height: 50,
+           //      alignment: Alignment.center,
+           //      child: Text('SEND'),
+           //    ),
+           //  ),
+           //  SizedBox(
+           //     height: 30,
+           //  ),
+           //  InkWell(
+           //    onTap: (){
+           //      NotificationHelper.showNotification();
+           //    },
+           //    child: Container(
+           //      width: 300,
+           //      color: Colors.grey,
+           //      height: 50,
+           //      alignment: Alignment.center,
+           //      child: Text('Show'),
+           //    ),
+           //  ),
+           //  SizedBox(
+           //    height: 30,
+           //  ),
           ],
         ),
       ),

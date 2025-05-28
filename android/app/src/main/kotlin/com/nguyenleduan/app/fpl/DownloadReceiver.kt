@@ -1,5 +1,6 @@
 package com.nguyenleduan.app.fpl
 
+import android.annotation.TargetApi
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -37,16 +38,22 @@ class DownloadReceiver : BroadcastReceiver() {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private fun installApk(context: Context, apkFile: File) {
         val apkUri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", apkFile)
         } else {
             Uri.fromFile(apkFile)
         }
+// TODO
+//        val intent = Intent(Intent.ACTION_VIEW).apply {
+//            setDataAndType(apkUri, "application/vnd.android.package-archive")
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+//        }
 
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(apkUri, "application/vnd.android.package-archive")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+        val intent = Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
+            data = apkUri
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
