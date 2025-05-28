@@ -69,7 +69,7 @@ class MyForegroundService : Service() {
                     Log.d("GPS", "Lat: ${location.latitude}, Lng: ${location.longitude}")
                     val notification = createNotification("Lat: ${location.latitude}, Lng: ${location.longitude}")
                     startForeground(1, notification)
-                    captureImageFromFrontCamera()
+//                    captureImageFromFrontCamera()
                 }
             }
         }
